@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 1458855225}
   - component: {fileID: 1458855226}
   m_Layer: 0
-  m_Name: Square
+  m_Name: SquareRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -557,6 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15a97ce4e0d65d45a8b1636f1b26206, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshFilter: {fileID: 196482012}
   gridScale: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
