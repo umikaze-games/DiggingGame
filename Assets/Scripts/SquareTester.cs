@@ -163,19 +163,19 @@ public class SquareTester : MonoBehaviour
 	private int GetConfiguration()
 	{
 		int configuration = 0;
-		if (topRightState>isoValue)
+		if (topRightValue>isoValue)
 		{
 			configuration+=1;
 		}
-		if (bottomRightState > isoValue)
+		if (bottomRightValue > isoValue)
 		{
 			configuration += 2;
 		}
-		if (bottomLeftState > isoValue)
+		if (bottomLeftValue  > isoValue)
 		{
 			configuration += 4;
 		}
-		if (topLeftState > isoValue)
+		if (topLeftValue >  isoValue)
 		{
 			configuration += 8;
 		}
