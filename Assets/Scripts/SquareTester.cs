@@ -19,14 +19,15 @@ public class SquareTester : MonoBehaviour
 
 	[Header("Settings")]
 	[SerializeField]float gridScale;
+	[SerializeField] float isoValue;
 	List<Vector3>vertices=new List<Vector3>();
 	List<int>triangles=new List<int>();
 
 	[Header("Configuration")]
-	[SerializeField] bool topRightState;
-	[SerializeField] bool bottomRightState;
-	[SerializeField] bool bottomLeftState;
-	[SerializeField] bool topLeftState;
+	[SerializeField] float topRightValue;
+	[SerializeField] float bottomRightValue;
+	[SerializeField] float bottomLeftValue;
+	[SerializeField] float topLeftValue;
 	private void Start()
 	{
 		topRight = gridScale*Vector2.one/2;
@@ -53,6 +54,26 @@ public class SquareTester : MonoBehaviour
 	private void Update()
 	{
 	
+	}
+	private void Interpolate()
+	{
+		//float topLerp = (isoValue - topLeftValue)/(topRightValue-topLeftValue);
+		float topLerp = Mathf.InverseLerp(topLeftValue, topRightValue, isoValue);
+		topLerp = Mathf.Clamp01(topLerp);
+		topCenter = topLeft + (topRight - topLeft) * topLerp;
+
+		float rightLerp = Mathf.InverseLerp(topRightValue, bottomRightValue, isoValue);
+		rightLerp = Mathf.Clamp01(rightLerp);
+		rightCenter = topRight + (bottomRight - topRight) * rightLerp;
+
+		float bottomLerp = Mathf.InverseLerp(bottomLeftValue, bottomRightValue, isoValue);
+		bottomLerp = Mathf.Clamp01(bottomLerp);
+		bottomCenter = bottomLeft + (bottomRight - bottomLeft) * bottomLerp;
+
+		float leftLerp = Mathf.InverseLerp(topLeftValue, bottomLeftValue, isoValue);
+		leftLerp = Mathf.Clamp01(leftLerp);
+		leftCenter = topLeft + (bottomLeft - topLeft) * leftLerp;
+
 	}
 	private void Triangulate(int configuration)
 	{
@@ -142,19 +163,19 @@ public class SquareTester : MonoBehaviour
 	private int GetConfiguration()
 	{
 		int configuration = 0;
-		if (topRightState)
+		if (topRightState>isoValue)
 		{
 			configuration+=1;
 		}
-		if (bottomRightState)
+		if (bottomRightState > isoValue)
 		{
 			configuration += 2;
 		}
-		if (bottomLeftState)
+		if (bottomLeftState > isoValue)
 		{
 			configuration += 4;
 		}
-		if (topLeftState)
+		if (topLeftState > isoValue)
 		{
 			configuration += 8;
 		}
