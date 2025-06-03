@@ -40,20 +40,21 @@ public class SquareTester : MonoBehaviour
 		bottomCenter = bottomLeft + Vector2.right * gridScale / 2;
 		leftCenter = topLeft + Vector2.down * gridScale / 2;
 
+
+	}
+
+	private void Update()
+	{
 		Mesh mesh = new Mesh();
 		vertices.Clear();
 		triangles.Clear();
 
+		Interpolate();
 		Triangulate(GetConfiguration());
 
 		mesh.vertices = vertices.ToArray();
 		mesh.triangles = triangles.ToArray();
 		meshFilter.mesh = mesh;
-	}
-
-	private void Update()
-	{
-	
 	}
 	private void Interpolate()
 	{
