@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using UnityEditor;
 #endif
 using UnityEngine;
@@ -9,9 +10,26 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] int gridSize;
 	[SerializeField] float gridScale;
     float[,] grid;
+	private void Awake()
+	{
+		InputManager.onTouching += TouchingCallback;
+	}
+
+	private void TouchingCallback(Vector3 worldPosition)
+	{
+		Debug.Log(worldPosition);
+	}
+
 	private void Start()
 	{
 		grid=new float[gridSize,gridSize];
+		for (int y = 0; y < gridSize; y++)
+		{
+			for (int x = 0; x < gridSize; x++)
+			{
+				grid[x, y] = UnityEngine.Random.Range(0, 2f);
+			}
+		}
 	}
 	private void Update()
 	{
@@ -39,6 +57,8 @@ public class TerrainGenerator : MonoBehaviour
 				//Vector2 gridPosition=new Vector2(x, y);
 				Vector2 worldPosition=GetWorldPositionFromGridPosition(x,y);
 				Gizmos.DrawSphere(worldPosition, gridScale/4);
+
+				Handles.Label(worldPosition + Vector2.up * gridScale / 3,grid[x,y].ToString());
 			}
 		}
 	}
