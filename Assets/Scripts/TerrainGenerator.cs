@@ -3,6 +3,7 @@ using System;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TerrainGenerator : MonoBehaviour
 {
@@ -18,6 +19,25 @@ public class TerrainGenerator : MonoBehaviour
 	private void TouchingCallback(Vector3 worldPosition)
 	{
 		Debug.Log(worldPosition);
+		worldPosition.z = 0;
+		Vector2Int gridPosition = GetGridPositionFromWorldPosition(worldPosition);
+		if (!IsValidGridPosition(gridPosition))
+		{ 
+			return;
+		}
+		grid[gridPosition.x, gridPosition.y] = 0;
+	}
+
+	private bool IsValidGridPosition(Vector2Int gridPosition)
+	{ 
+		return gridPosition.x>=0&&gridPosition.x<gridSize&&gridPosition.y>=0&&gridPosition.y<gridSize;
+	}
+	private Vector2Int GetGridPositionFromWorldPosition(Vector3 worldPosition)
+	{
+		Vector2Int gridPosition=new Vector2Int();
+		gridPosition.x =Mathf.FloorToInt(worldPosition.x/gridScale+gridSize/2-gridScale/2);
+		gridPosition.y = Mathf.FloorToInt(worldPosition.y / gridScale + gridSize / 2 - gridScale / 2);
+		return gridPosition;
 	}
 
 	private void Start()
