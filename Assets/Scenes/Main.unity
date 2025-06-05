@@ -507,8 +507,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a19dc16e38f8e4cb93fafa5903f3e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brushRadius: 1
+  brushStrength: 0.2
   gridSize: 5
   gridScale: 1
+  isoValue: 1
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 #endif
 using UnityEngine;
@@ -7,10 +8,16 @@ using UnityEngine.UIElements;
 
 public class TerrainGenerator : MonoBehaviour
 {
+	[Header("Brush Settings")]
+	[SerializeField] int brushRadius;
+	[SerializeField] float brushStrength;
+
     [Header("Data")]
     [SerializeField] int gridSize;
 	[SerializeField] float gridScale;
-    float[,] grid;
+	[SerializeField] float isoValue;
+
+	float[,] grid;
 	private void Awake()
 	{
 		InputManager.onTouching += TouchingCallback;
@@ -21,11 +28,20 @@ public class TerrainGenerator : MonoBehaviour
 		Debug.Log(worldPosition);
 		worldPosition.z = 0;
 		Vector2Int gridPosition = GetGridPositionFromWorldPosition(worldPosition);
-		if (!IsValidGridPosition(gridPosition))
-		{ 
-			return;
+		for (int y = gridPosition.y-brushRadius; y <= gridPosition.y+brushRadius; y++)
+		{
+			for (int x = gridPosition.x - brushRadius; x <= gridPosition.x + brushRadius; x++)
+			{
+				Vector2Int currentGridPosition=new Vector2Int(x, y);
+				if (!IsValidGridPosition(currentGridPosition))
+				{
+					continue;
+				}
+				grid[currentGridPosition.x, currentGridPosition.y] = 0;
+			}
 		}
-		grid[gridPosition.x, gridPosition.y] = 0;
+	
+
 	}
 
 	private bool IsValidGridPosition(Vector2Int gridPosition)
@@ -47,13 +63,9 @@ public class TerrainGenerator : MonoBehaviour
 		{
 			for (int x = 0; x < gridSize; x++)
 			{
-				grid[x, y] = UnityEngine.Random.Range(0, 2f);
+				grid[x, y] = isoValue + 0.1f;
 			}
 		}
-	}
-	private void Update()
-	{
-		
 	}
 
 #if UNITY_EDITOR
