@@ -1,13 +1,18 @@
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class TerrainGenerator : MonoBehaviour
 {
+	[Header(" Elements ")]
+	[SerializeField] private MeshFilter filter;
+
 	[Header("Brush Settings")]
 	[SerializeField] int brushRadius;
 	[SerializeField] float brushStrength;
@@ -17,12 +22,29 @@ public class TerrainGenerator : MonoBehaviour
 	[SerializeField] float gridScale;
 	[SerializeField] float isoValue;
 
+	private List<Vector3> vertices = new List<Vector3>();
+	private List<int> triangles = new List<int>();
+
+	SquareGrid squareGrid;
 	float[,] grid;
 	private void Awake()
 	{
 		InputManager.onTouching += TouchingCallback;
 	}
+	private void Start()
+	{
+		grid = new float[gridSize, gridSize];
+		for (int y = 0; y < gridSize; y++)
+		{
+			for (int x = 0; x < gridSize; x++)
+			{
+				grid[x, y] = isoValue + 0.1f;
+			}
+		}
+		squareGrid= new SquareGrid(gridSize-1,gridScale,isoValue);
 
+		GenerateMesh();
+	}
 	private void TouchingCallback(Vector3 worldPosition)
 	{
 		Debug.Log(worldPosition);
@@ -40,8 +62,9 @@ public class TerrainGenerator : MonoBehaviour
 				grid[currentGridPosition.x, currentGridPosition.y] = 0;
 			}
 		}
-	
 
+		GenerateMesh();
+	
 	}
 
 	private bool IsValidGridPosition(Vector2Int gridPosition)
@@ -56,17 +79,22 @@ public class TerrainGenerator : MonoBehaviour
 		return gridPosition;
 	}
 
-	private void Start()
+
+	private void GenerateMesh()
 	{
-		grid=new float[gridSize,gridSize];
-		for (int y = 0; y < gridSize; y++)
-		{
-			for (int x = 0; x < gridSize; x++)
-			{
-				grid[x, y] = isoValue + 0.1f;
-			}
-		}
+		Mesh mesh = new Mesh();
+
+		vertices.Clear();
+		triangles.Clear();
+
+		squareGrid.Update(grid);
+
+		mesh.vertices = squareGrid.GetVertices();
+		mesh.triangles = squareGrid.GetTriangles();
+
+		filter.mesh = mesh;
 	}
+
 
 #if UNITY_EDITOR
 	Vector2 GetWorldPositionFromGridPosition(int x, int y)
