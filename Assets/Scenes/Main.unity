@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 429938763}
   - component: {fileID: 429938762}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: TerrainRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -595,10 +595,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filter: {fileID: 429938763}
-  brushRadius: 1
+  brushRadius: 2
   brushStrength: 0.2
-  gridSize: 5
-  gridScale: 1
+  gridSize: 50
+  gridScale: 0.2
   isoValue: 1
 --- !u!1 &1458855224
 GameObject:
@@ -616,7 +616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1458855225
 Transform:
   m_ObjectHideFlags: 0

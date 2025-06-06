@@ -71,7 +71,17 @@ public struct SquareGrid
 
 				triangleStartIndex += currentSquare.GetVertices().Length;
 
-		
+				//Vector2[] uvArray = currentSquare.GetUVs();
+
+
+				//for (int i = 0; i < uvArray.Length; i++)
+				//{
+				//	uvArray[i] /= squares.GetLength(0);
+				//	uvArray[i] += Vector2.one * gridScale / 2;
+				//}
+
+
+				//uvs.AddRange(uvArray);
 			}
 		}
 	}

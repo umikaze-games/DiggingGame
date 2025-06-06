@@ -19,7 +19,7 @@ public struct Square
 	public Square(Vector2 position,float gridScale)
 	{
 		this.position = position;
-		topRight = gridScale * Vector2.one / 2;
+		topRight = position+gridScale * Vector2.one / 2;
 		bottomRight = topRight + Vector2.down * gridScale;
 		bottomLeft = bottomRight + Vector2.left * gridScale;
 		topLeft = bottomLeft + Vector2.up * gridScale;
@@ -54,7 +54,9 @@ public struct Square
 
 	}
 	public void Triangulate(float isoValue, float[] values)
-	{ 
+	{
+		vertices.Clear();
+		triangles.Clear();
 		int configuration=GetConfiguration(isoValue,values);
 		Interpolate(isoValue,values);
 		Triangulate(configuration);
