@@ -17,6 +17,7 @@ public class TerrainGenerator : MonoBehaviour
 	[SerializeField] float gridScale;
 	[SerializeField] float isoValue;
 
+
 	private List<Vector3> vertices = new List<Vector3>();
 	private List<int> triangles = new List<int>();
 
@@ -128,7 +129,25 @@ public class TerrainGenerator : MonoBehaviour
 		else
 			filter.gameObject.AddComponent<MeshCollider>().sharedMesh = mesh;
 	}
+	public void Initialize(int gridSize, float gridScale, Vector2 uvOffset, Vector2Int terrainGridSize)
+	{
+		this.gridSize = gridSize;
+		this.gridScale = gridScale;
+		//this.uvOffset = uvOffset;
+		//this.terrainGridSize = terrainGridSize;
 
+		mesh = new Mesh();
+
+		grid = new float[gridSize, gridSize];
+
+		for (int y = 0; y < gridSize; y++)
+			for (int x = 0; x < gridSize; x++)
+				grid[x, y] = isoValue + 0.1f;
+
+		squareGrid = new SquareGrid(gridSize - 1, gridScale, isoValue);
+
+		GenerateMesh();
+	}
 
 #if UNITY_EDITOR
 	Vector2 GetWorldPositionFromGridPosition(int x, int y)
