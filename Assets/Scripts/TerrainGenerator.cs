@@ -1,12 +1,6 @@
-#if UNITY_EDITOR
-using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEditor;
-#endif
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class TerrainGenerator : MonoBehaviour
 {
@@ -29,9 +23,10 @@ public class TerrainGenerator : MonoBehaviour
 	SquareGrid squareGrid;
 	Mesh mesh;
 	float[,] grid;
+
 	private void Awake()
 	{
-		InputManager.onTouching += TouchingCallback;
+
 	}
 	private void Start()
 	{
@@ -49,6 +44,14 @@ public class TerrainGenerator : MonoBehaviour
 		squareGrid= new SquareGrid(gridSize-1,gridScale,isoValue);
 
 		GenerateMesh();
+	}
+	void OnEnable()
+	{
+		InputManager.onTouching += TouchingCallback;
+	}
+	void OnDisable()
+	{
+		InputManager.onTouching -= TouchingCallback;
 	}
 	private void TouchingCallback(Vector3 worldPosition)
 	{
@@ -105,6 +108,13 @@ public class TerrainGenerator : MonoBehaviour
 
 		mesh.vertices = squareGrid.GetVertices();
 		mesh.triangles = squareGrid.GetTriangles();
+
+		Vector2[]uvs=squareGrid.GetUVs();
+		for (int i = 0; i < uvs.Length; i++)
+		{
+			uvs[i] /= gridScale;
+		}
+		mesh.uv=uvs;
 
 		filter.mesh = mesh;
 

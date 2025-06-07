@@ -35,4 +35,5 @@ public class InputManager : MonoBehaviour
 		onTouching?.Invoke(hit.point);
 		
 	}
+	
 }
